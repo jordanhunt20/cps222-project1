@@ -1,9 +1,4 @@
-/* Estimate the value of pi using the Taylor series for atan(x) at x = 1
- *
- * The user is asked to specify the number of digits of precision desired
- *
- * This version provides a sequential baseline for calculating speedup when using
- * various parallel versions
+/*
  *
  * $Smake: g++ -o %F %f
  */
