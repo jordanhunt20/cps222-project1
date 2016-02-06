@@ -1,6 +1,6 @@
 /*
  *
- * $Smake: g++ -o %F %f
+ * $Smake: g++ -fpermissive -o %F %f
  */
 
 #include <iostream>
@@ -16,17 +16,57 @@ int main() {
     std::cin >> numOrganisms;
 
     std::cout << "Locations? ";
-	int initOrganisms[numOrganisms];
-	for (int i=0; i < numOrganisms; i++) {
+	int initOrganisms [numOrganisms];
+	for (int i = 0; i < numOrganisms * 2; i++) { // works
 		std::cin >> initOrganisms[i];
 	}
-
     while (std::cin.get() != '\n'); // Clear input buffer
-
     std::cout << "Generations? ";
     std::cin >> generations;
 
     while (std::cin.get() != '\n'); // Clear input buffer
+
+	static const char ESC = 27; // Clear screen
+	std::cout << ESC << "[H" << ESC << "[J" << "Initial:" << std::endl;
+
+	static const int activeRows = 18;
+	static const int activeCols = 50;
+	static const int totalRows = activeRows + 2;
+	static const int totalCols = activeCols + 2;
+
+	for (int row = 0; row < totalRows; row++) { // row loop
+		for (int col = 0; col < totalCols; col++) { // column loop
+			if (row == 0 || row == totalRows - 1) { // top and bottom
+				if (col == 0 || col == totalCols - 1) { // corners
+					std::cout << "+";
+				} else { // not corners
+					std::cout << "-";
+				}
+			} else { // not top or bottom
+				if (col == 0 || col == totalCols - 1) { // sides
+					std::cout << "|";
+				} else {
+					bool dead = true;
+					for (int j = 0; j < numOrganisms * 2; j += 2) {
+						if (initOrganisms[j] == row && initOrganisms[j + 1] == col) { // Living organism
+							std::cout << "*";
+							dead = false;
+						} 
+					}
+					if (dead) {
+						std::cout << " ";
+					}
+				}
+			}
+		} 
+		std::cout << std::endl;
+	}
+				
+			
+
+	enum Organism { NONE, GESTATING, LIVING, DYING }; // Representation of each cell
+    Organism _board[totalRows][totalCols]; // Create board
+		
 
     return 0;
 }
