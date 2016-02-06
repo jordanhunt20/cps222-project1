@@ -3,30 +3,27 @@
  * $Smake: g++ -o %F %f
  */
 
-using namespace std;
 #include <iostream>
-#include <string>
+#include <vector>
 
 /* Main program
  * Program that displays the game of life in the command prompt
  */
 
-main()
-{
-    string inputLocations, inputLocationsClean, input;
+int main() {
+    std::string inputLocations, inputLocationsClean;
     int numOrganisms, generations, **initOrganisms, i, j, k, m, n;
-    initOrganisms = new int*[2];
-    inputLocations = ' ';
 
-    cout << "How many organisms initially? ";
+    std::cout << "How many organisms initially? ";
     std::cin >> numOrganisms;
-    std::cout << "Number of Organisms: " << numOrganisms << endl;
+    std::cout << "Number of Organisms: " << numOrganisms << std::endl;
 
     std::cout << "Locations? ";
+	int initOrganisms[4];
+	for (int i=0; i < 4; i++) {
+		std::cin >> initOrganisms[i];
+	}
 
-    //get rid of whitespace code guided by code found at http://stackoverflow.com/questions/8394930/c-remove-whitespace 
-    std::getline( std::cin, input );
-    std::cout << input;
 	/*
     k = 0;
     j = 0;
