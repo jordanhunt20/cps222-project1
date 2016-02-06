@@ -6,46 +6,27 @@
 #include <iostream>
 #include <vector>
 
-/* Main program
- * Program that displays the game of life in the command prompt
+/**
+ * Run the game of life
  */
-
 int main() {
-    std::string inputLocations, inputLocationsClean;
-    int numOrganisms, generations, **initOrganisms, i, j, k, m, n;
+    int numOrganisms, generations;
 
     std::cout << "How many organisms initially? ";
     std::cin >> numOrganisms;
-    std::cout << "Number of Organisms: " << numOrganisms << std::endl;
 
     std::cout << "Locations? ";
-	int initOrganisms[4];
-	for (int i=0; i < 4; i++) {
+	int initOrganisms[numOrganisms];
+	for (int i=0; i < numOrganisms; i++) {
 		std::cin >> initOrganisms[i];
 	}
 
-	/*
-    k = 0;
-    j = 0;
-    for ( i = 0; i < input.length(); i++ ) {
-		std::cout << "in";
-        if(input[i] != ' ') {
-            if ( k < 1 )
-                k++;
-            else {
-                j++;
-                k--;
-            }
-            initOrganisms[j][k] = input[i];
-            std::cout << "Organism Locations: " << initOrganisms[j][k];
-        }
-    }
-    std::cout << endl;
-    std::cout << "done" << endl;
+    while (std::cin.get() != '\n'); // Clear input buffer
 
-    //cout << "Generations? ";
-    //cin >> generations;
-*/
+    std::cout << "Generations? ";
+    std::cin >> generations;
+
+    while (std::cin.get() != '\n'); // Clear input buffer
+
+    return 0;
 }
-
-
