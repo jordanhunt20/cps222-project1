@@ -50,7 +50,7 @@ void drawBoard(int totalRows, int totalCols, int numOrganisms,
  * Run the game of life
  */
 int main() {
-    int numOrganisms, generations;
+    int numOrganisms, generations, currentGeneration;
 
     std::cout << "How many organisms initially? ";
     std::cin >> numOrganisms;
@@ -75,7 +75,14 @@ int main() {
     static const int totalRows = activeRows + 2;
     static const int totalCols = activeCols + 2;
 
-    drawBoard(totalRows, totalCols, numOrganisms, initOrganisms);
+    while (currentGeneration++ < generations) {
+        std::cout << "Generation " << currentGeneration << std::endl;
+        drawBoard(totalRows, totalCols, numOrganisms, initOrganisms);
+
+        std::cout << ESC << "[23;1H" << ESC << "[K"
+            << "Press RETURN to continue";
+        while (std::cin.get() != '\n') {}  // Wait for user to press RETURN
+    }
 
     // Representation of each cell
     enum Organism { NONE, GESTATING, LIVING, DYING };
