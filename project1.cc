@@ -7,33 +7,14 @@
 #include <vector>
 
 /**
- * Run the game of life
+ * Draw game board
+ * @param totalRows     Number of rows on game board
+ * @param totalCols     Number of columns on game board
+ * @param numOrganisms  Number of organisms to start with
+ * @param initOrganisms Starting positions of organisms
  */
-int main() {
-    int numOrganisms, generations;
-
-    std::cout << "How many organisms initially? ";
-    std::cin >> numOrganisms;
-
-    std::cout << "Locations? ";
-    int initOrganisms[numOrganisms];
-
-    for (int i = 0; i < numOrganisms * 2; i++) {  // works
-        std::cin >> initOrganisms[i];
-    }
-    while (std::cin.get() != '\n') {}  // Clear input buffer
-    std::cout << "Generations? ";
-    std::cin >> generations;
-
-    while (std::cin.get() != '\n') {}  // Clear input buffer
-
-    static const char ESC = 27;  // Clear screen
-    std::cout << ESC << "[H" << ESC << "[J" << "Initial:" << std::endl;
-
-    static const int activeRows = 18;
-    static const int activeCols = 50;
-    static const int totalRows = activeRows + 2;
-    static const int totalCols = activeCols + 2;
+void drawBoard(int totalRows, int totalCols, int numOrganisms,
+    int initOrganisms[]) {
 
     for (int row = 0; row < totalRows; row++) {  // row loop
         for (int col = 0; col < totalCols; col++) {  // column loop
@@ -63,6 +44,38 @@ int main() {
         }
         std::cout << std::endl;
     }
+}
+
+/**
+ * Run the game of life
+ */
+int main() {
+    int numOrganisms, generations;
+
+    std::cout << "How many organisms initially? ";
+    std::cin >> numOrganisms;
+
+    std::cout << "Locations? ";
+    int initOrganisms[numOrganisms];
+
+    for (int i = 0; i < numOrganisms * 2; i++) {  // works
+        std::cin >> initOrganisms[i];
+    }
+    while (std::cin.get() != '\n') {}  // Clear input buffer
+    std::cout << "Generations? ";
+    std::cin >> generations;
+
+    while (std::cin.get() != '\n') {}  // Clear input buffer
+
+    static const char ESC = 27;  // Clear screen
+    std::cout << ESC << "[H" << ESC << "[J" << "Initial:" << std::endl;
+
+    static const int activeRows = 18;
+    static const int activeCols = 50;
+    static const int totalRows = activeRows + 2;
+    static const int totalCols = activeCols + 2;
+
+    drawBoard(totalRows, totalCols, numOrganisms, initOrganisms);
 
     // Representation of each cell
     enum Organism { NONE, GESTATING, LIVING, DYING };
