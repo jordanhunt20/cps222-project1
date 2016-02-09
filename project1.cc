@@ -65,7 +65,7 @@ int main() {
     while (std::cin.get() != '\n') {}  // Clear input buffer
     std::cout << "Generations? ";
     std::cin >> generations;
-
+    
     while (std::cin.get() != '\n') {}  // Clear input buffer
 
     static const char ESC = 27;  // Clear screen
@@ -108,7 +108,11 @@ int main() {
     }
     int neighborOffsetsX[8] = {-1, 0, 1, 1, 1, 0, -1, -1}; //offsets in X direction starting top left going clockwise
     int neighborOffsetsY[8] = {1, 1, 1, 0, -1, -1, -1, 0}; //offsets in Y direction starting top left going clockwise
+    currentGeneration = 0; //necessary because sometimes it will be arbitrary if not initialized to 0
     while (currentGeneration++ < generations) {
+	std::cout << ESC << "[23;1H" << ESC << "[K"
+            << "Press RETURN to continue";
+	while (std::cin.get() != '\n') {}  // Wait for user to press RETURN
 	// Put new values into _board based on old values;
 	// Temporary values of gestating/dying
 	for (int row = 1; row < activeRows; row++) { //row
@@ -142,14 +146,22 @@ int main() {
 	    }
 	}
 
+	//Empty living organisms vector
+	livingOrganisms.clear();
 	// Fill living organisms vector with new organism locations
-
+	for (int row = 1; row < activeRows; row++) { //row
+            for (int col = 1; col < activeCols; col++) { //col
+		if(_board[row][col] == LIVING) {
+	            livingOrganisms.push_back(row);
+		    livingOrganisms.push_back(col);
+		}
+	    }
+	}
+	numOrganisms = livingOrganisms.size() / 2;
         std::cout << "Generation " << currentGeneration << std::endl;
-        //drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
+        drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
 
-        std::cout << ESC << "[23;1H" << ESC << "[K"
-            << "Press RETURN to continue";
-        while (std::cin.get() != '\n') {}  // Wait for user to press RETURN
+        
     }
 
     
