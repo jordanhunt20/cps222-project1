@@ -159,9 +159,8 @@ int main() {
 	}
 	numOrganisms = livingOrganisms.size() / 2;
         std::cout << "Generation " << currentGeneration << std::endl;
+	std::cout << ESC << "[H" << ESC << "[J" << "Initial:" << std::endl;
         drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
-
-        
     }
 
     
