@@ -79,28 +79,75 @@ int main() {
 	// Representation of each cell
     enum Organism { NONE, GESTATING, LIVING, DYING };
     Organism _board[totalRows][totalCols];  // Create board
+	
+    //store initArray in a vector
+    std::vector<int> livingOrganisms;
+    for (int n = 0; n < numOrganisms * 2; n++) {
+	livingOrganisms.push_back(initOrganisms[n]);
+    }
 
-	drawBoard(totalRows, totalCols, numOrganisms, initOrganisms); // Draw initial board with initial organisms
+    std::cout << "HI";
+
+    // Draw initial Board
+    drawBoard(totalRows, totalCols, numOrganisms, initOrganisms); // Draw initial board with initial organisms
 	
-	for (int row = 0; row < totalRows; row++) { // populate _board with initial organisms
-		for (int col = 0; col < totalCols; col++) {
-			for (int j = 0; j < numOrganisms * 2; j += 2) {
-				bool dead = true;
-                if (initOrganisms[j] == row &&
-                    initOrganisms[j + 1] == col) {  // Living organism
-						_board[row][col] = LIVING;
-                        dead = false;
+    // populate _board with initial organisms
+    for (int row = 0; row < totalRows; row++) { 
+        for (int col = 0; col < totalCols; col++) {
+	    bool dead = true;
+            for (int j = 0; j < numOrganisms * 2; j += 2) {
+	        
+                if (initOrganisms[j] == row && initOrganisms[j + 1] == col) {  // Living organism
+		    _board[row][col] = LIVING;
+                    dead = false;
                 }
-				if (dead) {
-					_board[row][col] = NONE;
-				}
-			}
-		}
-	}
-	
+	    }
+	    if (dead) {
+	        _board[row][col] = NONE;
+                
+	    }
+        }
+    }
+    int neighborOffsetsX[8] = {-1, 0, 1, 1, 1, 0, -1, -1}; //offsets in X direction starting top left going clockwise
+    int neighborOffsetsY[8] = {1, 1, 1, 0, -1, -1, -1, 0}; //offsets in Y direction starting top left going clockwise
     while (currentGeneration++ < generations) {
+	// Put new values into _board based on old values;
+	// Temporary values of gestating/dying
+	for (int row = 1; row < activeRows; row++) { //row
+            for (int col = 1; col < activeCols; col++) { //col
+		int numNeighbors = 0;
+		for (int m = 0; m < 8; m++) {
+		    Organism neighbor = _board[row + neighborOffsetsY[m]][col + neighborOffsetsX[m]];
+		    if (neighbor == LIVING || neighbor == DYING) //include dying since they are not yet dead cells
+		        numNeighbors++;
+		}
+		if(_board[row][col] == NONE) { //empty cell
+		    if (numNeighbors == 3)
+			_board[row][col] = GESTATING;
+		}
+		if(_board[row][col] == LIVING) { //living cell
+	            if (numNeighbors < 2 || numNeighbors > 3)
+			_board[row][col] = DYING;
+		}
+	    }
+	}
+
+	// Put permanent values of dying/living into board
+	for (int row = 1; row < activeRows; row++) { //row
+            for (int col = 1; col < activeCols; col++) { //col
+		if(_board[row][col] == GESTATING) { //empty cell
+		    _board[row][col] = LIVING;
+		}
+		if(_board[row][col] == DYING) { //living cell
+		    _board[row][col] = NONE;
+		}
+	    }
+	}
+
+	// Fill living organisms vector with new organism locations
+
         std::cout << "Generation " << currentGeneration << std::endl;
-        drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
+        //drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
 
         std::cout << ESC << "[23;1H" << ESC << "[K"
             << "Press RETURN to continue";
@@ -111,30 +158,3 @@ int main() {
 	
     return 0;
 }
-
-/* started working on an organism class; 
-decided it was unecessary but wasn't sure 
-if I should delete it 
-
-public class Organism {
-	private:
-		enum _state { NONE, GESTATING, LIVING, DYING };
-		int _row, _col;
-	public:
-		void setState (enum newState) {
-			_state = newState;
-		}
-		void die () {
-			_state = DYING;
-		}
-		void gestate () {
-			_state = GESTATING;
-		}
-		void empty () {
-			_state = NONE;
-		}
-		void live () {
-			_state = LIVING;
-		}
-};
-*/
