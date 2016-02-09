@@ -14,7 +14,7 @@
  * @param initOrganisms Starting positions of organisms
  */
 void drawBoard(int totalRows, int totalCols, int numOrganisms,
-    int liveOrganisms[]) {
+    std::vector<int> liveOrganisms) {
 
     for (int row = 0; row < totalRows; row++) {  // row loop
         for (int col = 0; col < totalCols; col++) {  // column loop
@@ -86,10 +86,8 @@ int main() {
 	livingOrganisms.push_back(initOrganisms[n]);
     }
 
-    std::cout << "HI";
-
     // Draw initial Board
-    drawBoard(totalRows, totalCols, numOrganisms, initOrganisms); // Draw initial board with initial organisms
+    drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms); // Draw initial board with initial organisms
 	
     // populate _board with initial organisms
     for (int row = 0; row < totalRows; row++) { 
