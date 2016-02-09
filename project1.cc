@@ -14,7 +14,7 @@
  * @param initOrganisms Starting positions of organisms
  */
 void drawBoard(int totalRows, int totalCols, int numOrganisms,
-    int initOrganisms[]) {
+    int liveOrganisms[]) {
 
     for (int row = 0; row < totalRows; row++) {  // row loop
         for (int col = 0; col < totalCols; col++) {  // column loop
@@ -30,8 +30,8 @@ void drawBoard(int totalRows, int totalCols, int numOrganisms,
                 } else {
                     bool dead = true;
                     for (int j = 0; j < numOrganisms * 2; j += 2) {
-                        if (initOrganisms[j] == row &&
-                            initOrganisms[j + 1] == col) {  // Living organism
+                        if (liveOrganisms[j] == row &&
+                            liveOrganisms[j + 1] == col) {  // Living organism
                             std::cout << "*";
                             dead = false;
                         }
@@ -45,6 +45,7 @@ void drawBoard(int totalRows, int totalCols, int numOrganisms,
         std::cout << std::endl;
     }
 }
+
 
 /**
  * Run the game of life
@@ -74,19 +75,66 @@ int main() {
     static const int activeCols = 50;
     static const int totalRows = activeRows + 2;
     static const int totalCols = activeCols + 2;
+	
+	// Representation of each cell
+    enum Organism { NONE, GESTATING, LIVING, DYING };
+    Organism _board[totalRows][totalCols];  // Create board
 
+	drawBoard(totalRows, totalCols, numOrganisms, initOrganisms); // Draw initial board with initial organisms
+	
+	for (int row = 0; row < totalRows; row++) { // populate _board with initial organisms
+		for (int col = 0; col < totalCols; col++) {
+			for (int j = 0; j < numOrganisms * 2; j += 2) {
+				bool dead = true;
+                if (initOrganisms[j] == row &&
+                    initOrganisms[j + 1] == col) {  // Living organism
+						_board[row][col] = LIVING;
+                        dead = false;
+                }
+				if (dead) {
+					_board[row][col] = NONE;
+				}
+			}
+		}
+	}
+	
     while (currentGeneration++ < generations) {
         std::cout << "Generation " << currentGeneration << std::endl;
-        drawBoard(totalRows, totalCols, numOrganisms, initOrganisms);
+        drawBoard(totalRows, totalCols, numOrganisms, livingOrganisms);
 
         std::cout << ESC << "[23;1H" << ESC << "[K"
             << "Press RETURN to continue";
         while (std::cin.get() != '\n') {}  // Wait for user to press RETURN
     }
 
-    // Representation of each cell
-    enum Organism { NONE, GESTATING, LIVING, DYING };
-    Organism _board[totalRows][totalCols];  // Create board
-
+    
+	
     return 0;
 }
+
+/* started working on an organism class; 
+decided it was unecessary but wasn't sure 
+if I should delete it 
+
+public class Organism {
+	private:
+		enum _state { NONE, GESTATING, LIVING, DYING };
+		int _row, _col;
+	public:
+		void setState (enum newState) {
+			_state = newState;
+		}
+		void die () {
+			_state = DYING;
+		}
+		void gestate () {
+			_state = GESTATING;
+		}
+		void empty () {
+			_state = NONE;
+		}
+		void live () {
+			_state = LIVING;
+		}
+};
+*/
