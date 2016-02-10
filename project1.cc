@@ -56,7 +56,7 @@ int main() {
     std::cin >> numOrganisms;
 
     std::cout << "Locations? ";
-    int initOrganisms[numOrganisms];
+    int initOrganisms[numOrganisms * 2];
 
     for (int i = 0; i < numOrganisms * 2; i++) {  // works
         std::cin >> initOrganisms[i];
