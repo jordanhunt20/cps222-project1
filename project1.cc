@@ -44,8 +44,6 @@ void drawBoard(int totalRows, int totalCols, int numOrganisms,
         std::cout << std::endl;
     }
 }
-
-
 /**
  * Run the game of life
  */
@@ -82,7 +80,7 @@ int main() {
     //store initArray in a vector
     std::vector<int> livingOrganisms;
     for (int n = 0; n < numOrganisms * 2; n++) {
-	livingOrganisms.push_back(initOrganisms[n]);
+        livingOrganisms.push_back(initOrganisms[n]);
     }
 
     // Draw initial Board
@@ -91,19 +89,18 @@ int main() {
     // populate _board with initial organisms
     for (int row = 0; row < totalRows; row++) {
         for (int col = 0; col < totalCols; col++) {
-	    bool dead = true;
-	    for (int j = 0; j < numOrganisms * 2; j += 2) {
+	        bool dead = true;
+	        for (int j = 0; j < numOrganisms * 2; j += 2) {
 
-	        // Living organism
+	            // Living organism
                 if (initOrganisms[j] == row && initOrganisms[j + 1] == col) {
-		    _board[row][col] = LIVING;
+		            _board[row][col] = LIVING;
                     dead = false;
                 }
-	    }
-	    if (dead) {
-	        _board[row][col] = NONE;
-
-	    }
+	        }
+	        if (dead) {
+	            _board[row][col] = NONE;
+	        }
         }
     }
 
@@ -121,34 +118,34 @@ int main() {
     	// Put new values into _board based on old values;
     	// Temporary values of gestating/dying
     	for (int row = 1; row < activeRows; row++) { //row
-                for (int col = 1; col < activeCols; col++) { //col
-    		int numNeighbors = 0;
-    		for (int m = 0; m < 8; m++) {
-    		    Organism neighbor = _board[row + neighborOffsetsY[m]][col + neighborOffsetsX[m]];
-		    // Include dying since they are not yet dead cells
-    		    if (neighbor == LIVING || neighbor == DYING) {
-    		        numNeighbors++;
-		    }
-    		}
-    		if ((_board[row][col] == NONE) && (numNeighbors == 3)) {
-    			_board[row][col] = GESTATING;
-		}
-    		if ((_board[row][col] == LIVING) &&
-		  (numNeighbors < 2 || numNeighbors > 3)) {
-    			_board[row][col] = DYING;
-    		}
+            for (int col = 1; col < activeCols; col++) { //col
+    		    int numNeighbors = 0;
+    		    for (int m = 0; m < 8; m++) {
+    		        Organism neighbor = _board[row + neighborOffsetsY[m]][col + neighborOffsetsX[m]];
+		            // Include dying since they are not yet dead cells
+    		        if (neighbor == LIVING || neighbor == DYING) {
+    		            numNeighbors++;
+		            }
+    		    }
+    		    if ((_board[row][col] == NONE) && (numNeighbors == 3)) {
+    			    _board[row][col] = GESTATING;
+		        }
+    		    if ((_board[row][col] == LIVING) &&
+		            (numNeighbors < 2 || numNeighbors > 3)) {
+    			    _board[row][col] = DYING;
+    		    }
     	    }
     	}
 
     	// Put permanent values of dying/living into board
     	for (int row = 1; row < activeRows; row++) {  //row
-	    for (int col = 1; col < activeCols; col++) {  //col
-    		if (_board[row][col] == GESTATING) {  //empty cell
-    		    _board[row][col] = LIVING;
-    		}
-    		if (_board[row][col] == DYING) {  //living cell
-    		    _board[row][col] = NONE;
-    		}
+	        for (int col = 1; col < activeCols; col++) {  //col
+    		    if (_board[row][col] == GESTATING) {  //empty cell
+    		        _board[row][col] = LIVING;
+    		    }
+    		    if (_board[row][col] == DYING) {  //living cell
+    		        _board[row][col] = NONE;
+    		    }
     	    }
     	}
 
@@ -156,11 +153,11 @@ int main() {
     	livingOrganisms.clear();
     	// Fill living organisms vector with new organism locations
     	for (int row = 1; row < activeRows; row++) { //row
-	    for (int col = 1; col < activeCols; col++) { //col
-    		if (_board[row][col] == LIVING) {
+	        for (int col = 1; col < activeCols; col++) { //col
+    		    if (_board[row][col] == LIVING) {
     	            livingOrganisms.push_back(row);
-    		    livingOrganisms.push_back(col);
-    		}
+    		        livingOrganisms.push_back(col);
+    		    }
     	    }
     	}
     	numOrganisms = livingOrganisms.size() / 2;
